@@ -1,6 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using FantasyAggregatorApp.Data;
+using Microsoft.Extensions.Configuration;
+
+// HOSTING: Local development
+// dotnet run
+// Swagger: http://localhost:5196/swagger/index.html
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,5 +31,13 @@ app.UseSwaggerUI();
 app.UseCors("LocalDev");
 app.UseAuthorization();
 app.MapControllers();
+
+var config = new ConfigurationBuilder()
+    .SetBasePath(System.IO.Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false)
+    .Build();
+
+DbConnector.Init(config.GetValue<string>("ConnectionString") ?? config["ConnectionString"]);
+
 
 app.Run();
