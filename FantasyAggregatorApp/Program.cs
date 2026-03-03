@@ -145,14 +145,12 @@ class Program
         if (!int.TryParse(Console.ReadLine(), out var userId)) { Console.WriteLine("Bad UserId"); return; }
         Console.Write("PlatformId: ");
         if (!int.TryParse(Console.ReadLine(), out var platformId)) { Console.WriteLine("Bad PlatformId"); return; }
-        Console.Write("PlatformTeamId (remote id): ");
-        var ptid = Console.ReadLine();
         Console.Write("TeamName: ");
         var name = Console.ReadLine();
         Console.Write("LeagueName (optional): ");
         var league = Console.ReadLine();
 
-        var t = new Team { UserId = userId, PlatformId = platformId, PlatformTeamId = ptid, TeamName = name, LeagueName = league };
+        var t = new Team { UserId = userId, PlatformId = platformId, TeamName = name, LeagueName = league };
         var id = teamRepo.Create(t);
         Console.WriteLine($"Created TeamId: {id}");
     }

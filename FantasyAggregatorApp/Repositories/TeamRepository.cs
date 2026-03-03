@@ -13,7 +13,7 @@ namespace FantasyAggregatorApp.Repositories
             var list = new List<Team>();
             using var conn = DbConnector.GetConnection();
             conn.Open();
-            using var cmd = new MySqlCommand("SELECT TeamId, UserId, PlatformId, PlatformTeamId, TeamName, LeagueName FROM Teams", conn);
+            using var cmd = new MySqlCommand("SELECT TeamId, UserId, PlatformId, TeamName, LeagueName FROM Teams", conn);
             using var rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
@@ -21,7 +21,6 @@ namespace FantasyAggregatorApp.Repositories
                     TeamId = rdr.GetInt32("TeamId"),
                     UserId = rdr.GetInt32("UserId"),
                     PlatformId = rdr.GetInt32("PlatformId"),
-                    PlatformTeamId = rdr.GetString("PlatformTeamId"),
                     TeamName = rdr.GetString("TeamName"),
                     LeagueName = rdr.IsDBNull(rdr.GetOrdinal("LeagueName")) ? null : rdr.GetString("LeagueName")
                 });
@@ -33,7 +32,7 @@ namespace FantasyAggregatorApp.Repositories
         {
             using var conn = DbConnector.GetConnection();
             conn.Open();
-            using var cmd = new MySqlCommand("SELECT TeamId, UserId, PlatformId, PlatformTeamId, TeamName, LeagueName FROM Teams WHERE TeamId=@id", conn);
+            using var cmd = new MySqlCommand("SELECT TeamId, UserId, PlatformId, TeamName, LeagueName FROM Teams WHERE TeamId=@id", conn);
             cmd.Parameters.AddWithValue("@id", id);
             using var rdr = cmd.ExecuteReader();
             if (rdr.Read())
@@ -42,7 +41,6 @@ namespace FantasyAggregatorApp.Repositories
                     TeamId = rdr.GetInt32("TeamId"),
                     UserId = rdr.GetInt32("UserId"),
                     PlatformId = rdr.GetInt32("PlatformId"),
-                    PlatformTeamId = rdr.GetString("PlatformTeamId"),
                     TeamName = rdr.GetString("TeamName"),
                     LeagueName = rdr.IsDBNull(rdr.GetOrdinal("LeagueName")) ? null : rdr.GetString("LeagueName")
                 };
@@ -55,10 +53,9 @@ namespace FantasyAggregatorApp.Repositories
             using var conn = DbConnector.GetConnection();
             conn.Open();
             using var cmd = new MySqlCommand(
-                "INSERT INTO Teams (UserId, PlatformId, PlatformTeamId, TeamName, LeagueName) VALUES (@u,@p,@ptid,@name,@league); SELECT LAST_INSERT_ID();", conn);
+                "INSERT INTO Teams (UserId, PlatformId, TeamName, LeagueName) VALUES (@u,@p,@name,@league); SELECT LAST_INSERT_ID();", conn);
             cmd.Parameters.AddWithValue("@u", t.UserId);
             cmd.Parameters.AddWithValue("@p", t.PlatformId);
-            cmd.Parameters.AddWithValue("@ptid", t.PlatformTeamId);
             cmd.Parameters.AddWithValue("@name", t.TeamName);
             cmd.Parameters.AddWithValue("@league", (object)t.LeagueName ?? DBNull.Value);
             var id = Convert.ToInt32(cmd.ExecuteScalar());
@@ -70,10 +67,9 @@ namespace FantasyAggregatorApp.Repositories
             using var conn = DbConnector.GetConnection();
             conn.Open();
             using var cmd = new MySqlCommand(
-                "UPDATE Teams SET UserId=@u, PlatformId=@p, PlatformTeamId=@ptid, TeamName=@name, LeagueName=@league WHERE TeamId=@id", conn);
+                "UPDATE Teams SET UserId=@u, PlatformId=@p, TeamName=@name, LeagueName=@league WHERE TeamId=@id", conn);
             cmd.Parameters.AddWithValue("@u", t.UserId);
             cmd.Parameters.AddWithValue("@p", t.PlatformId);
-            cmd.Parameters.AddWithValue("@ptid", t.PlatformTeamId);
             cmd.Parameters.AddWithValue("@name", t.TeamName);
             cmd.Parameters.AddWithValue("@league", (object)t.LeagueName ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@id", t.TeamId);

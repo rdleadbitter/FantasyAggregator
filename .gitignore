@@ -1,3 +1,13 @@
+appsettings.json
+# Node
+node_modules/
+build/
+dist/
+
+# .NET
 bin/
 obj/
-appsettings.json
+
+# Environment
+.env
+.vscode/
