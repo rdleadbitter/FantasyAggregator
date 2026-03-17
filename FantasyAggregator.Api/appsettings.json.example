@@ -1,0 +1,11 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionString": "Server=localhost;Port=3306;Database=FantasyAggregator;Uid=user;Pwd=StrongPassword;"
+
+}
